@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 类型别名：给实体类起别名，简化xml中的类名 -->
+    <typeAliases>
+        <!-- 实体类在com.dorm.newrepair.model包下，扫描这个包 -->
+        <package name="com.dorm.newrepair.model"/>
+    </typeAliases>
+
+    <!-- 环境配置：连接MySQL -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- MySQL8.x驱动类（必须是cj.jdbc，5.x是jdbc） -->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <!-- 数据库URL：localhost:3306 + 数据库名dorm_repair + 时区+SSL -->
+                <property name="url" value="jdbc:mysql://localhost:3306/dorm_repair?useSSL=false &amp; serverTimezone=Asia/Shanghai&amp;allowPublicKeyRetrieval=true"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 映射器：指定Mapper接口位置（包扫描方式，自动扫描com.dorm.newrepair.mapper下所有接口） -->
+    <mappers>
+        <package name="com.dorm.newrepair.mapper"/>
+    </mappers>
+</configuration>
