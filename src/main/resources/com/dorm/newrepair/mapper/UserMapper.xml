@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dorm.newrepair.mapper.UserMapper">
+    <!-- 结果映射：数据库字段 → Java实体字段（处理下划线转驼峰） -->
+    <resultMap id="UserResultMap" type="com.dorm.newrepair.model.User">
+        <id column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="role" property="role"/>
+        <result column="building" property="building"/>
+        <result column="room_num" property="roomNum"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!--新增用户（注册）-->
+    <insert id="insertUser">
+        insert into user (account,password,name,role,building,room_num)
+        values (#{account},#{password},#{name},#{role},#{building},#{roomNum})
+    </insert>
+
+    <!--根据账号查询用户-->
+    <select id="selectUserByAccount" resultType="com.dorm.newrepair.model.User">
+        select * from user where account = #{account}
+    </select>
+
+    <!--修改密码-->
+    <update id="updatePassword">
+        update user set password = #{newPassword} where account = #{account}
+    </update>
+
+    <!--绑定或修改宿舍-->
+    <update id="updateDorm">
+        update user set building = #{building},room_num = #{roomNum}
+                    where account = #{account}
+    </update>
+
+</mapper>

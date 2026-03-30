@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dorm.newrepair.mapper.RepairOrderMapper">
+
+    <!-- 结果映射（移除handleDesc，匹配你的实体类） -->
+    <resultMap id="RepairOrderResultMap" type="com.dorm.newrepair.model.RepairOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="studentAccount" column="student_account"/>
+        <result property="building" column="building"/>
+        <result property="roomNum" column="room_num"/>
+        <result property="faultType" column="fault_type"/>
+        <result property="faultDesc" column="fault_desc"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 1. 学生创建报修单（移除handleDesc字段） -->
+    <insert id="insertRepairOrder" parameterType="com.dorm.newrepair.model.RepairOrder">
+        INSERT INTO repair_order (
+            order_id, student_account, building, room_num,
+            fault_type, fault_desc, status, create_time, update_time
+        )
+        VALUES (
+                   #{orderId}, #{studentAccount}, #{building}, #{roomNum},
+                   #{faultType}, #{faultDesc}, #{status}, #{createTime}, #{updateTime}
+               )
+    </insert>
+
+    <!-- 2. 根据学生账号查询报修记录 -->
+    <select id="selectByStuAccount" resultMap="RepairOrderResultMap">
+        SELECT * FROM repair_order WHERE student_account = #{studentAccount}
+    </select>
+
+    <!-- 3. 取消报修单 -->
+    <update id="cancelOrder">
+        DELETE FROM repair_order
+        WHERE order_id = #{orderId}
+    </update>
+
+    <!-- 4. 管理员修改报修单状态 -->
+    <update id="updateOrderStatus">
+        UPDATE repair_order SET status = #{status} WHERE order_id = #{orderId}
+    </update>
+
+    <!-- 5. 管理员删除报修单 -->
+    <delete id="deleteOrder">
+        DELETE FROM repair_order WHERE order_id = #{orderId}
+    </delete>
+
+    <!-- 6. 管理员查询所有报修单 -->
+    <select id="selectOrder" resultMap="RepairOrderResultMap">
+        SELECT * FROM repair_order
+        <if test="status != null">
+            WHERE status = #{status}
+        </if>
+    </select>
+
+    <!-- 7. 根据报修单号查询 -->
+    <select id="selectByOrderId" resultMap="RepairOrderResultMap">
+        SELECT * FROM repair_order WHERE order_id = #{orderId}
+    </select>
+
+</mapper>
+
+        <!--<?xml version="1.0" encoding="UTF-8" ?>-->
+        <!--<!DOCTYPE mapper-->
+        <!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+        <!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+        <!--<mapper namespace="com.dorm.newrepair.mapper.RepairOrderMapper">-->
+        <!--     &lt;!&ndash;结果映射：数据库字段 → Java实体字段&ndash;&gt;-->
+        <!--    <resultMap id="RepairOrderResultMap" type="com.dorm.newrepair.model.RepairOrder">-->
+        <!--        <id column="order_id" property="orderId"/>-->
+        <!--        <result column="student_account" property="studentAccount"/>-->
+        <!--        <result column="building" property="building"/>-->
+        <!--        <result column="room_num" property="roomNum"/>-->
+        <!--        <result column="fault_type" property="faultType"/>-->
+        <!--        <result column="fault_desc" property="faultDesc"/>-->
+        <!--        <result column="status" property="status"/>-->
+        <!--        <result column="create_time" property="createTime"/>-->
+        <!--        <result column="update_time" property="updateTime"/>-->
+        <!--    </resultMap>-->
+        <!--    &lt;!&ndash;创建报修单&ndash;&gt;-->
+        <!--    <insert id="insertRepairOrder">-->
+        <!--        insert into repair_order (order_id,student_account,building,room_num,fault_type,fault_desc,status)-->
+        <!--        values(#{orderId,#{studentAccount},#{building},#{roomNum},#{faultType},#{faultDesc},#{status})-->
+        <!--    </insert>-->
+
+        <!--    &lt;!&ndash;查询报修记录&ndash;&gt;-->
+        <!--    <select id="selectByStuAccount" resultType="com.dorm.newrepair.model.RepairOrder">-->
+        <!--        select * from repair_order where student_account = #{studentAccount} order by crate_time desc-->
+        <!--    </select>-->
+
+
+        <!--    &lt;!&ndash;取消报修单&ndash;&gt;-->
+        <!--    <delete id="cancelOrder">-->
+        <!--        delete * from repair_order where order_id = #{orderId}-->
+        <!--    </delete>-->
+
+        <!--    &lt;!&ndash;修改订单状态&ndash;&gt;-->
+        <!--    <update id="updateOrderStatus">-->
+        <!--        update repair_order set status = #{status} where order_id = #{orderId} and status = 0-->
+        <!--    </update>-->
+        <!--    &lt;!&ndash;删除报修单&ndash;&gt;-->
+        <!--    <delete id="deleteOrder">-->
+        <!--        delete * from repair_order where order_id = #{orderId}-->
+        <!--    </delete>-->
+
+        <!--    &lt;!&ndash;查询报修单&ndash;&gt;-->
+        <!--    <select id="selectOrder" resultType="com.dorm.newrepair.model.RepairOrder">-->
+        <!--        select * from repair_order-->
+        <!--        <where>-->
+        <!--            <if test="status != null">-->
+        <!--                status = #{status}-->
+        <!--            </if>-->
+        <!--        </where>-->
+        <!--        order by create_time desc-->
+        <!--    </select>-->
+
+        <!--    &lt;!&ndash;查询报修单详情&ndash;&gt;-->
+        <!--    <select id="selectByOrderId" resultType="com.dorm.newrepair.model.RepairOrder">-->
+        <!--        SELECT * FROM repair_order WHERE order_id = #{orderId}-->
+        <!--    </select>-->
+
+
+        <!--</mapper>-->

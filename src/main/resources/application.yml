@@ -1,0 +1,25 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /repair
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dorm_repair?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: root
+    password: 1234
+    hikari:
+      maximum-pool-size: 10
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+mybatis:
+  mapper-locations: classpath:com/dorm/newrepair/mapper/*.xml
+  type-aliases-package: com.dorm.newrepair.model
+  configuration:
+    map-underscore-to-camel-case: true
+
+
